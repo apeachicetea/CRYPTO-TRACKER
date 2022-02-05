@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import Router from "./routes/Router";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@300&family=Roboto:wght@300&family=Source+Sans+Pro:wght@300;400&family=Ubuntu:wght@300&display=swap');
@@ -65,6 +66,8 @@ function App() {
     <>
       <GlobalStyle />
       <Router />
+      {/* react query가 캐쉬에 저장한 데이터들을 볼수 있다 */}
+      <ReactQueryDevtools initialIsOpen={true} />
     </>
   );
 }
