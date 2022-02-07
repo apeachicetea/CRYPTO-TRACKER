@@ -1,6 +1,6 @@
 import { useLocation, useParams, useRouteMatch } from "react-router";
 import { Switch, Route, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import Price from "../routes/Price";
 import Chart from "./Chart";
@@ -68,6 +68,10 @@ interface PriceData {
       volume_24h_change_24h: number;
     };
   };
+}
+
+interface ICoinProps {
+  isDark: boolean;
 }
 
 const Container = styled.div`
@@ -150,7 +154,10 @@ function Coin() {
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId)
+    () => fetchCoinTickers(coinId),
+    {
+      refetchInterval: 5000,
+    }
   );
 
   //2. useEffect, useState 방법
@@ -172,6 +179,11 @@ function Coin() {
 
   return (
     <Container>
+      <Helmet>
+        <title>
+          {state?.name ? state.name : loading ? "Loading.." : infoData?.name}
+        </title>
+      </Helmet>
       <Header>
         <Title>
           {state?.name ? state.name : loading ? "Loading.." : infoData?.name}
@@ -192,7 +204,7 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Open Source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>{tickersData?.quotes.USD.price}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
